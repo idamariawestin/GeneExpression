@@ -101,7 +101,7 @@ bar = ax.bar(xlabels_new, new_Height, yerr=error, ecolor='black', capsize=10, wi
 ax.set_ylabel('% A \N{MINUS SIGN} D $\it{Gene}$ / total $\it{Gene}$', fontsize=20)
 ax.set_xticks(xlabels_new)
 ax.set_xticklabels(xlabels_new)
-#ax.set_title('Gene expression of F5 gene')
+#ax.set_title('Gene expression of XX gene')
 ax.yaxis.grid(False)
 
 #auto-label bars:
