@@ -1,0 +1,169 @@
+import pandas as pd
+import scipy.stats as ss
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import rcParams
+
+## All the raw data and the means
+A_controls = [11.88, 8.35, 9.49, 7.45]
+A_controls_mean = np.mean(A_controls)
+A_cases = [0.85, 10.26, 2.71, 6.83, 2.6]
+A_cases_mean = np.mean(A_cases)
+A_casesblood_YES = [5.28, 3.61, 2.51, 3.83, 7.09, 3.3, 7.75, 8.2, 8.14, 8.19, 8.53, 5.16, 9.09, 3.26, 3.16, 4.92]
+A_casesblood_YES_mean = np.mean(A_casesblood_YES)
+A_casesblood_NO = [8.39, 8.88, 4.19, 7.91]
+A_casesblood_NO_mean = np.mean(A_casesblood_NO)
+B_controls = [1.5, 1.1, 0.71, 0.38]
+B_controls_mean = np.mean(B_controls)
+B_cases = [0, 0.6, 1.17, 0, 0]
+B_cases_mean = np.mean(B_cases)
+B_casesblood_YES = [0, 1.09, 2.24, 2.8, 1.96, 1.51, 5.84, 0, 1.27, 3.48, 4.01, 1.01, 4.47, 2.04, 2.31, 0.86]
+B_casesblood_YES_mean = np.mean(B_casesblood_YES)
+B_casesblood_NO = [2.46, 0, 2.17, 3.94]
+B_casesblood_NO_mean = np.mean(B_casesblood_NO)
+C_controls = [5.6, 3.1, 2.8, 6.32]
+C_controls_mean = np.mean(C_controls)
+C_cases = [0, 5.19, 6.52, 3.86, 4.81]
+C_cases_mean = np.mean(C_cases)
+C_casesblood_YES = [8.66, 5.95, 5.74, 8.54, 10.87, 4.7, 9.52, 8.16, 7.51, 7.29, 8.7, 10.27, 16.03, 7.69, 5.53, 2.9]
+C_casesblood_YES_mean = np.mean(C_casesblood_YES)
+C_casesblood_NO = [10.26, 6.32, 9.51, 7.26]
+C_casesblood_NO_mean = np.mean(C_casesblood_NO)
+D_controls = [16.76, 14.81, 17.7, 20.2]
+D_controls_mean = np.mean(D_controls)
+D_cases = [8.05, 25, 20.63, 27.38, 13.11]
+D_cases_mean = np.mean(D_cases)
+D_casesblood_YES = [48.09, 33.96, 25.23, 29.48, 33.8, 20.17, 41.38, 28.99, 30.23, 40.8, 27.01, 27.67, 47.86, 26.09, 24.07, 19.17]
+D_casesblood_YES_mean = np.mean(D_casesblood_YES)
+D_casesblood_NO = [27.9, 36.4, 39.9, 49.58]
+D_casesblood_NO_mean = np.mean(D_casesblood_NO)
+
+### make a variable for all the mean values
+controls = [A_controls_mean, B_controls_mean, C_controls_mean, D_controls_mean]
+cases = [A_cases_mean, B_cases_mean, C_cases_mean, D_cases_mean]
+casesblood_YES = [A_casesblood_YES_mean, B_casesblood_YES_mean, C_casesblood_YES_mean, D_casesblood_YES_mean]
+casesblood_NO = [A_casesblood_NO_mean, B_casesblood_NO_mean, C_casesblood_NO_mean, D_casesblood_NO_mean]
+
+### These values are already the means
+BrainAdult = [11.26, 14.17, 0.59, 31.0] 
+BrainFetal = [4.5, 9.81, 1.12, 34.3] 
+SkinAdult = [5.23, 12.54, 2.35, 31.1] 
+SkinFetal = [5.01, 5.22, 1.12, 23.2] 
+MuscleAdult = [13.42, 7.73, 1.06, 38.0] 
+
+## sum it up
+Donor_sum = np.sum(controls)
+cases_sum = np.sum(cases)
+casesblood_YES_sum = np.sum(casesblood_YES)
+casesblood_NO_sum = np.sum(casesblood_NO)
+BrainAdult_sum = np.sum(BrainAdult)
+BrainFetal_sum = np.sum(BrainFetal)
+SkinAdult_sum = np.sum(SkinAdult)
+SkinFetal_sum = np.sum(SkinFetal)
+MuscleAdult_sum = np.sum(MuscleAdult)
+print(SkinFetal_sum)
+
+fig=plt.figure(figsize=(15,7.5), dpi=300)
+ax=fig.add_subplot()
+
+## x-labels
+xlabels = ['$Gene^{+}$*cases', '$Gene^{-}$*non-cases',
+           ' $Gene^{+}$*cases', '$Gene^{-}$*cases', 'Brain*Adult', 
+           'Brain*Fetal', 'Skin*Adult', 'Skin*Fetal', 'Muscle*Adult']
+
+xlabels_new = [label.replace('*', '\n') for label in xlabels]
+#degrees=30
+
+### Height is the mean height of the bars
+Height = [round(cases_sum, 0), round(Donor_sum, 0), round(casesblood_YES_sum, 0), round(casesblood_NO_sum, 0), 
+        round(BrainAdult_sum, 0), round(BrainFetal_sum, 0), round(SkinAdult_sum, 0),
+        round(SkinFetal_sum, 0), round(MuscleAdult_sum, 0)]
+
+new_Height = list(map(int,Height))
+
+# standard deviation
+Donor_std = np.std(controls)
+cases_std = np.std(cases)
+casesblood_YES_std = np.std(casesblood_YES)
+casesblood_NO_std = np.std(casesblood_NO)
+BrainAdult_std = np.std(BrainAdult)
+BrainFetal_std = np.std(BrainFetal)
+SkinAdult_std = np.std(SkinAdult)
+SkinFetal_std = np.std(SkinFetal)
+MuscleAdult_std = np.std(MuscleAdult)
+
+
+error = [cases_std, Donor_std, casesblood_YES_std, casesblood_NO_std, BrainAdult_std, 
+        BrainFetal_std, SkinAdult_std, SkinFetal_std, MuscleAdult_std]
+
+
+bar = ax.bar(xlabels_new, new_Height, yerr=error, ecolor='black', capsize=10, width=0.5, align='center',) #yerr=error, 
+ax.set_ylabel('% A \N{MINUS SIGN} D $\it{Gene}$ / total $\it{Gene}$', fontsize=20)
+ax.set_xticks(xlabels_new)
+ax.set_xticklabels(xlabels_new)
+#ax.set_title('Gene expression of F5 gene')
+ax.yaxis.grid(False)
+
+#auto-label bars:
+#ax.bar_label(ax.containers[1], fontsize=14, label_type='center')
+
+#plt.text(), (x,y) is where the numbers will be put,
+#index will give x posistion and data+1 will make a little gap between the bar and the numbers.
+for index,data in enumerate(new_Heights):
+    plt.text(x=index+0.05 , y =data+1 , s=f"{data}", fontdict=dict(fontsize=15))
+
+
+## set different color for different bars in the chart
+ax.get_children()[1].set_color('white')
+ax.get_children()[2].set_color('white')
+ax.get_children()[3].set_color('gainsboro')
+ax.get_children()[4].set_color('gainsboro')
+ax.get_children()[5].set_color('darkgrey')
+ax.get_children()[6].set_color('darkgrey')
+ax.get_children()[7].set_color('darkgrey')
+ax.get_children()[8].set_color('darkgrey')
+ax.get_children()[9].set_color('darkgrey')
+
+## set edge color for all bars
+for bar in bar:
+    bar.set_edgecolor("black")
+    bar.set_linewidth(1)
+    
+    
+# We change the fontsize of minor ticks label 
+ax.tick_params(axis='y', which='major', pad=12, labelsize=15)
+ax.tick_params(axis='y', which='minor', labelsize=30) 
+ax.tick_params(axis='x', which='major', pad=20, labelsize=15)
+
+
+## put dividing lines in the chart
+plt.axvline(x=1.5, color='black', label='axvline - full height')
+plt.axvline(x=3.5, color='black', label='axvline - full height')
+
+## customize what numbers to be shown on the y-axis
+y = [0,10,20,30,40,50,60,70,80,90]
+#plt.plot(x,y)
+plt.yticks(np.arange(min(y), max(y)+1, 10))
+
+## set which boundary lines will be displayed
+right_side = ax.spines["right"]
+right_side.set_visible(False)
+top_side = ax.spines["top"]
+top_side.set_visible(False)
+
+## put text inside the chart
+plt.text(0.2, 80, 'CE', fontsize=30)
+plt.text(0.37, 75, '*', fontsize=20)
+plt.text(2.15, 80, 'WBC', fontsize=30)
+plt.text(5.1, 80, 'Other tissues', fontsize=30)
+
+## put text inside the bars that are in italic
+plt.text(-0.185, 1, '$\it{n}$ = 5', fontsize=15)
+plt.text(0.815, 1, '$\it{n}$ = 4', fontsize=15)
+plt.text(1.765, 1, '$\it{n}$ = 16', fontsize=15)
+plt.text(2.815, 1, '$\it{n}$ = 4', fontsize=15)
+
+# Save the figure and show
+plt.tight_layout()
+plt.savefig('C:/Home/' + 'Figure_2.' +'png', dpi= 300, bbox_inches='tight')
+plt.show()
