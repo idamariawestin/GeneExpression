@@ -1,0 +1,98 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib import rcParams
+import numpy as np
+
+plt.rcParams['pdf.fonttype'] = 42
+plt.rcParams['ps.fonttype'] = 42
+
+A_cases = [0.85, 10.26, 2.71, 6.83, 2.6]
+
+B_cases = [0, 0.6, 1.17, 0, 0]
+
+C_cases = [0, 5.19, 6.52, 3.86, 4.81]
+
+D_cases = [8.05, 25, 20.63, 27.38, 13.11]
+
+E_cases = [0, 0.9, 2.76, 5.23, 2.88]
+
+A_controls = [11.88, 8.35, 9.49, 7.45]
+
+B_controls = [1.5, 1.1, 0.71, 0.38]
+
+C_controls = [5.6, 3.1, 2.8, 6.32]
+
+D_controls = [16.76, 14.81, 17.7, 20.2]
+
+E_controls = [3.5, 2.5, 4.12, 1.9]
+
+to_plot = [A_cases, A_controls, B_cases, B_controls, C_cases, C_controls, D_cases, D_controls, E_cases, E_controls]
+
+fig=plt.figure(figsize=(12,7), dpi=300)
+ax=fig.add_subplot()
+
+plt.ylabel('% A-E $\it{Gene}$ / total $\it{Gene}$', fontsize=20)
+plt.xlabel('Assay group', fontsize=20)
+
+#plt.title(label='Gene expression of Gene', fontdict=None, loc='center', fontsize=20)
+
+medianprops = dict(linestyle='dotted', linewidth=2, color='black')
+meanprops = dict(linestyle='-', linewidth=2, color='black')
+bp=ax.boxplot(to_plot, showfliers=True, showmeans=True, meanline=True, medianprops=medianprops, meanprops=meanprops,
+              patch_artist=True)
+
+
+colors = ['gainsboro', 'white', 'gainsboro', 'white', 'gainsboro', 'white', 'gainsboro', 'white', 'gainsboro', 'white']
+for patch, color in zip(bp['boxes'], colors):
+    patch.set_facecolor(color)
+
+
+#plt.xticks(np.arange(1, 10, step=2), ('A', 'B', 'C', 'D', 'E'))
+
+# Hide major tick labels
+ax.set_xticklabels('')
+
+# Customize minor tick labels
+ax.set_xticks([1.5,3.5,5.5,7.5,9.5],      minor=True)
+ax.set_xticklabels(['A', 'B', 'C', 'D', 'E'], minor=True)
+
+
+ 
+# We change the fontsize of minor ticks label 
+ax.tick_params(axis='y', which='major', pad=12, labelsize=15)
+ax.tick_params(axis='x', which='minor', pad=20, labelsize=20)
+ax.tick_params(axis='x', which='major', pad=50, labelsize=15)
+
+y = [0,5,10,15,20,25,30,35]
+#plt.plot(x,y)
+plt.yticks(np.arange(min(y), max(y)+1, 5))
+
+# draw vertical line
+plt.axvline(x=2.5, color='black', label='axvline - full height')
+plt.axvline(x=4.5, color='black', label='axvline - full height')
+plt.axvline(x=6.5, color='black', label='axvline - full height')
+plt.axvline(x=8.5, color='black', label='axvline - full height')
+
+# draw horizontal lines with a given range
+# Assay A
+plt.axhline(y=15, xmin=0.06, xmax=0.14, color='black', linestyle = ':')
+plt.text(1.09, 16, 'p=0.11', fontsize=15)
+# Assay B
+plt.axhline(y=5, xmin=0.26, xmax=0.34, color='black', linestyle = ':')
+plt.text(3.09, 6, 'p=0.17', fontsize=15)
+# Assay C
+plt.axhline(y=10, xmin=0.46, xmax=0.54, color='black', linestyle = ':')
+plt.text(5.16, 11, 'p=0.9', fontsize=15)
+# Assay D
+plt.axhline(y=30, xmin=0.66, xmax=0.74, color='black', linestyle = ':')
+plt.text(7.07, 31, 'p=0.71', fontsize=15)
+# Assay E
+plt.axhline(y=9, xmin=0.86, xmax=0.94, color='black', linestyle = ':')
+plt.text(9.07, 10, 'p=0.71', fontsize=15)
+
+#remove top line
+top_side = ax.spines["top"]
+top_side.set_visible(False)
+
+fig.savefig('C:/Home/' + 'Figure_3.' +'png', dpi= 300, bbox_inches='tight')
+plt.show()
